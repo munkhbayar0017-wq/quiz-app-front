@@ -18,7 +18,7 @@ export default function Home() {
               <SidebarTrigger />
             </div>
 
-            <main className="flex items-center justify-center w-full h-full">
+            <main className="flex pt-30 justify-center w-full h-full">
               <InputCard />
             </main>
           </div>

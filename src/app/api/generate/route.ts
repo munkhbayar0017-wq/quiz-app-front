@@ -1,11 +1,14 @@
 import { NextRequest } from "next/server";
 import { GoogleGenAI } from "@google/genai";
+import prisma from "../../../../lib/prisma";
 
 // The client gets the API key from the environment variable `GEMINI_API_KEY`.
 const ai = new GoogleGenAI({});
 
 export async function POST(request: NextRequest) {
   try {
+    const data = await prisma.user.findMany();
+    console.log(data);
     const body = await request.json();
     const { content } = body;
 

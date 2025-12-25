@@ -1,3 +1,4 @@
+"use client";
 import InputCard from "./InputCard";
 import SummarizedCard from "./SummarizedCard";
 import { Button } from "@/components/ui/button";

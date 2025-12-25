@@ -6,46 +6,45 @@
 
 generator client {
   provider = "prisma-client-js"
-  output   = "../src/generated/prisma"
 }
 
 datasource db {
   provider = "postgresql"
 }
 
-model Article {
-  id        String   @id @default(cuid())
-  title     String
-  content   String
-  summary   String
-  userId    String
-  user      User     @relation(fields: [userId], references: [id])
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  quizzes   Quiz[]
-}
-
 model User {
-  id        String    @id @default(cuid())
-  clerkId   String    @unique
-  email     String    @unique
+  id        String   @id @default(cuid())
+  clerkId   String   @unique
+  email     String   @unique
   name      String?
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  articles  Article[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  // articles  Article[]
   // quizAttempts QuizAttempt[]
   // userScores   UserScore[]
 }
 
-model Quiz {
-  id        String   @id @default(cuid())
-  question  String
-  options   String[]
-  answer    String
-  articleId String
-  article   Article  @relation(fields: [articleId], references: [id])
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  // quizAttempts QuizAttempt[]
-  // userScores   UserScore[]
-}
+// model Article {
+//   id        String   @id @default(cuid())
+//   title     String
+//   content   String
+//   summary   String
+//   userId    String
+//   user      User     @relation(fields: [userId], references: [id])
+//   createdAt DateTime @default(now())
+//   updatedAt DateTime @updatedAt
+//   quizzes   Quiz[]
+// }
+
+// model Quiz {
+//   id        String   @id @default(cuid())
+//   question  String
+//   options   String[]
+//   answer    String
+//   articleId String
+//   article   Article  @relation(fields: [articleId], references: [id])
+//   createdAt DateTime @default(now())
+//   updatedAt DateTime @updatedAt
+//   // quizAttempts QuizAttempt[]
+//   // userScores   UserScore[]
+// }

@@ -1,5 +1,3 @@
-"use client";
-
 import { AppSidebar } from "./sideBar/AppSidebar";
 import { Header } from "./header/Header";
 import { SidebarTrigger } from "@/components/ui/sidebar";

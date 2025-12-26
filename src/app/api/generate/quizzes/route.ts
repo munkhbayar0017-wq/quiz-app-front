@@ -1,0 +1,35 @@
+import { NextRequest } from "next/server";
+import { GoogleGenAI } from "@google/genai";
+
+// The client gets the API key from the environment variable `GEMINI_API_KEY`.
+const ai = new GoogleGenAI({});
+
+export async function POST(request: NextRequest) {
+  try {
+    const body = await request.json();
+    const { content } = body;
+
+    if (!content) {
+      return Response.json({ error: "No message" }, { status: 400 });
+    }
+    const response = await ai.models.generateContent({
+      model: "gemini-2.5-flash",
+      contents: `Generate 5 multiple choice questions based on this article: ${content}. Return the response in this exact JSON format:
+      [
+        {
+          "question": "Question text here",
+          "options": ["Option 1", "Option 2", "Option 3", "Option 4"],
+          "answer": "0"
+        }
+      ]
+      Make sure the response is valid JSON and the answer is the index (0-3) of the correct option.`,
+    });
+    console.log(response.text);
+    return Response.json({ result: response.text });
+  } catch (err) {
+    return Response.json(
+      { error: "Server aldaa garlaa", details: String(err) },
+      { status: 500 }
+    );
+  }
+}

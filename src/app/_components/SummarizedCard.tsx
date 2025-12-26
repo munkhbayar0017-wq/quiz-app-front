@@ -22,8 +22,10 @@ import { useState } from "react";
 import axios from "axios";
 
 type SummarizedCardProps = {
-  quiz: string;
-  setQuiz: React.Dispatch<React.SetStateAction<string>>;
+  quiz: [];
+  setQuiz: React.Dispatch<React.SetStateAction<[]>>;
+  summary: string;
+  setSummary: React.Dispatch<React.SetStateAction<string>>;
   title: string;
   content: string;
   setStep: React.Dispatch<React.SetStateAction<number>>;
@@ -32,6 +34,8 @@ type SummarizedCardProps = {
 export default function SummarizedCard({
   quiz,
   setQuiz,
+  summary,
+  setSummary,
   title,
   content,
   setStep,
@@ -43,12 +47,20 @@ export default function SummarizedCard({
 
     setLoading(true);
     try {
-      //   const response = await axios.post(`/api/article/${articleId}/quizzes`, {
-      //     // title: title,
-      //     content,
-      //   });
-      //   setQuiz(response.data.result);
+      const response = await axios.post("/api/generate/quizzes", {
+        content,
+      });
+      setQuiz(response.data.result);
       setStep(3);
+
+      //       const quizRes = await axios.post(`/api/article/${articleId}/quizzes`, {
+      // question
+      //   options
+      //   answer
+      //   articleId
+      //       });
+
+      //       console.log("article saved", quizRes);
     } catch (err) {
       console.error(err);
     } finally {
@@ -72,7 +84,7 @@ export default function SummarizedCard({
           {title}
         </div>
         <div className="max-h-70 overflow-scroll text-black font-inter text-[14px] font-normal leading-5">
-          {quiz}
+          {summary}
         </div>
       </CardContent>
       <CardFooter className="flex justify-between gap-2 items-end ">

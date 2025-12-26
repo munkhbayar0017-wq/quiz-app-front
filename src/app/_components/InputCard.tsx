@@ -17,7 +17,8 @@ import { useState } from "react";
 import axios from "axios";
 
 type InputCardProps = {
-  setQuiz: React.Dispatch<React.SetStateAction<string>>;
+  summary: string;
+  setSummary: React.Dispatch<React.SetStateAction<string>>;
   title: string;
   setTitle: React.Dispatch<React.SetStateAction<string>>;
   content: string;
@@ -26,7 +27,7 @@ type InputCardProps = {
 };
 
 export default function InputCard({
-  setQuiz,
+  setSummary,
   title,
   setTitle,
   content,
@@ -39,13 +40,22 @@ export default function InputCard({
 
     setLoading(true);
     try {
-      const response = await axios.post("/api/generate", {
-        // title: title,
+      const generateRes = await axios.post("/api/generate", {
         content,
       });
-      setQuiz(response.data.result);
+
+      const generatedSummary = generateRes.data.result;
+
+      setSummary(generatedSummary);
       setStep(2);
-      console.log("ressss", response);
+
+      const articleRes = await axios.post("/api/articles", {
+        title: title,
+        content: content,
+        summary: generatedSummary,
+      });
+
+      console.log("article saved", articleRes);
     } catch (err) {
       console.error(err);
     } finally {

@@ -13,10 +13,20 @@ import {
 } from "@/components/ui/dialog";
 
 type QuickTestProps = {
+  quiz?: QuizQuestion[];
   setStep: React.Dispatch<React.SetStateAction<number>>;
 };
 
-export default function QuickTest({ setStep }: QuickTestProps) {
+type QuizQuestion = {
+  question: string;
+  options: string[];
+  correctAnswer?: string;
+};
+
+export default function QuickTest({ setStep, quiz }: QuickTestProps) {
+  // const quizArray = Array.isArray(quiz) ? quiz : [];
+  console.log("Quiz prop:", quiz);
+  // console.log("Quiz data:", quizArray);
   return (
     <div className="w-140 h-72 flex flex-col items-center justify-center gap-6">
       <div className="flex justify-between w-full">
@@ -66,33 +76,35 @@ export default function QuickTest({ setStep }: QuickTestProps) {
           </form>
         </Dialog>
       </div>
-      <div className="w-full h-50 bg-white border p-7 flex flex-col rounded-lg gap-5">
-        <div className="flex justify-between">
-          <div className="text-black font-inter text-[20px] font-medium leading-7 tracking-normal">
-            What was Genghis Khan’s birth name?
+      {quiz?.map((q, index) => (
+        <div
+          key={index}
+          className="w-full h-50 bg-white border p-7 flex flex-col rounded-lg gap-5"
+        >
+          <div className="flex justify-between">
+            <div className="text-black font-inter text-[20px] font-medium leading-7 tracking-normal">
+              {q.question}
+            </div>
+            <div className="text-black font-inter text-[20px] font-medium leading-7 tracking-normal">
+              {index + 1}/
+              <span className="text-gray-500 font-inter text-[16px] font-medium leading-6 tracking-normal">
+                {quiz.length}
+              </span>
+            </div>
           </div>
-          <div className="text-black font-inter text-[20px] font-medium leading-7 tracking-normal">
-            1/
-            <span className="text-gray-500 font-inter text-[16px] font-medium leading-6 tracking-normal">
-              5
-            </span>
+          <div className="grid grid-cols-2 gap-4">
+            {q.options.map((option, optionIndex) => (
+              <Button
+                key={optionIndex}
+                variant="outline"
+                className="cursor-pointer text-left"
+              >
+                {optionIndex + 1}. {option}
+              </Button>
+            ))}
           </div>
         </div>
-        <div className="grid grid-cols-2 gap-4">
-          <Button variant="outline" className="cursor-pointer">
-            Yesugei
-          </Button>
-          <Button variant="outline" className="cursor-pointer">
-            Yesugei
-          </Button>
-          <Button variant="outline" className="cursor-pointer">
-            Yesugei
-          </Button>
-          <Button variant="outline" className="cursor-pointer">
-            Yesugei
-          </Button>
-        </div>
-      </div>
+      ))}
     </div>
   );
 }

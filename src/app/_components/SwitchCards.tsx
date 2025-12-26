@@ -8,10 +8,12 @@ import QuickTest from "./QuickTest";
 import QuizCompleted from "./QuizCompleted";
 
 export default function SwitchCards() {
-  const [quiz, setQuiz] = useState<string>("");
+  const [summary, setSummary] = useState<string>("");
   const [title, setTitle] = useState<string>("");
   const [content, setContent] = useState<string>("");
   const [step, setStep] = useState<number>(1);
+  const [quiz, setQuiz] = useState<[]>([]);
+
   return (
     <div className="max-w-214 w-full min-h-110.5 p-7 flex flex-col gap-5">
       {step === 2 && (
@@ -27,7 +29,8 @@ export default function SwitchCards() {
       )}
       {step === 1 && (
         <InputCard
-          setQuiz={setQuiz}
+          summary={summary}
+          setSummary={setSummary}
           title={title}
           setTitle={setTitle}
           content={content}
@@ -39,12 +42,14 @@ export default function SwitchCards() {
         <SummarizedCard
           quiz={quiz}
           setQuiz={setQuiz}
+          summary={summary}
+          setSummary={setSummary}
           title={title}
           content={content}
           setStep={setStep}
         />
       )}
-      {step === 3 && <QuickTest setStep={setStep} />}
+      {step === 3 && <QuickTest setStep={setStep} quiz={quiz} />}
       {step === 4 && <QuizCompleted setStep={setStep} />}
     </div>
   );

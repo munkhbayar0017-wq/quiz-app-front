@@ -24,8 +24,11 @@ export async function POST(request: NextRequest) {
       ]
       Make sure the response is valid JSON and the answer is the index (0-3) of the correct option.`,
     });
-    console.log(response.text);
-    return Response.json({ result: response.text });
+    const cleanedText = (response.text ?? "")
+      .replace(/^\s*```json\s*/, "")
+      .replace(/```\s*$/, "");
+    console.log("Cleaned Text:", cleanedText);
+    return Response.json({ result: cleanedText });
   } catch (err) {
     return Response.json(
       { error: "Server aldaa garlaa", details: String(err) },

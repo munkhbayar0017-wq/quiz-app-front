@@ -1,3 +1,4 @@
+"use client";
 import { Button } from "@/components/ui/button";
 import GeminiIcon from "../icons/GeminiIcon";
 import { XIcon } from "lucide-react";
@@ -11,6 +12,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { useState } from "react";
 
 type QuickTestProps = {
   quiz?: QuizQuestion[];
@@ -24,11 +26,20 @@ type QuizQuestion = {
 };
 
 export default function QuickTest({ setStep, quiz }: QuickTestProps) {
-  // const quizArray = Array.isArray(quiz) ? quiz : [];
-  console.log("Quiz prop:", quiz);
-  // console.log("Quiz data:", quizArray);
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const parsedQuiz: QuizQuestion[] = JSON.parse(quiz as unknown as string);
+  const currentQuestion = parsedQuiz[currentQuestionIndex];
+
+  const handleAnswerClick = (optionIndex: number) => {
+    if (currentQuestionIndex < parsedQuiz.length - 1) {
+      setCurrentQuestionIndex(currentQuestionIndex + 1);
+    } else {
+      setStep(4);
+    }
+  };
+
   return (
-    <div className="w-140 h-72 flex flex-col items-center justify-center gap-6">
+    <div className="min-w-140 h-72 flex flex-col items-center justify-center gap-6">
       <div className="flex justify-between w-full">
         <div className="flex-col gap-2 items-center">
           <div className="flex gap-2 items-center">
@@ -76,35 +87,31 @@ export default function QuickTest({ setStep, quiz }: QuickTestProps) {
           </form>
         </Dialog>
       </div>
-      {quiz?.map((q, index) => (
-        <div
-          key={index}
-          className="w-full h-50 bg-white border p-7 flex flex-col rounded-lg gap-5"
-        >
-          <div className="flex justify-between">
-            <div className="text-black font-inter text-[20px] font-medium leading-7 tracking-normal">
-              {q.question}
-            </div>
-            <div className="text-black font-inter text-[20px] font-medium leading-7 tracking-normal">
-              {index + 1}/
-              <span className="text-gray-500 font-inter text-[16px] font-medium leading-6 tracking-normal">
-                {quiz.length}
-              </span>
-            </div>
+      <div className="w-full min-h-50 h-fit bg-white border p-7 flex flex-col rounded-lg gap-5">
+        <div className="flex justify-between gap-2 items-center">
+          <div className="text-black font-inter text-[20px] font-medium leading-7 tracking-normal">
+            {currentQuestion.question}
           </div>
-          <div className="grid grid-cols-2 gap-4">
-            {q.options.map((option, optionIndex) => (
-              <Button
-                key={optionIndex}
-                variant="outline"
-                className="cursor-pointer text-left"
-              >
-                {optionIndex + 1}. {option}
-              </Button>
-            ))}
+          <div className="text-black font-inter text-[20px] font-medium leading-7 tracking-normal">
+            {currentQuestionIndex + 1}/
+            <span className="text-gray-500 font-inter text-[16px] font-medium leading-6 tracking-normal">
+              {parsedQuiz.length}
+            </span>
           </div>
         </div>
-      ))}
+        <div className="grid grid-cols-2 gap-4">
+          {currentQuestion.options.map((option, optionIndex) => (
+            <Button
+              key={optionIndex}
+              variant="outline"
+              className="cursor-pointer text-left p-2 overflow-scroll"
+              onClick={() => handleAnswerClick(optionIndex)}
+            >
+              {optionIndex + 1}. {option}
+            </Button>
+          ))}
+        </div>
+      </div>
     </div>
   );
 }

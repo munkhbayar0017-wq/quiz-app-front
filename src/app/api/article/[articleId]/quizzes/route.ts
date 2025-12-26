@@ -1,35 +1,38 @@
-// import { NextRequest } from "next/server";
-// import { GoogleGenAI } from "@google/genai";
+import { NextRequest, NextResponse } from "next/server";
+import prisma from "../../../../../../lib/prisma";
 
-// // The client gets the API key from the environment variable `GEMINI_API_KEY`.
-// const ai = new GoogleGenAI({});
+type QuizQuestion = {
+  question: string;
+  options: string[];
+  correctAnswer?: string;
+  answer: string;
+};
 
-// export async function POST(request: NextRequest) {
-//   try {
-//     const body = await request.json();
-//     const { content } = body;
+export async function POST(
+  req: NextRequest,
+  { params }: { params: Promise<{ articleId: string }> }
+) {
+  try {
+    const { articleId } = await params;
+    const { quizzes } = await req.json();
 
-//     if (!content) {
-//       return Response.json({ error: "No message" }, { status: 400 });
-//     }
-//     const response = await ai.models.generateContent({
-//       model: "gemini-2.5-flash",
-//       contents: `Generate 5 multiple choice questions based on this article: ${content}. Return the response in this exact JSON format:
-//       [
-//         {
-//           "question": "Question text here",
-//           "options": ["Option 1", "Option 2", "Option 3", "Option 4"],
-//           "answer": "0"
-//         }
-//       ]
-//       Make sure the response is valid JSON and the answer is the index (0-3) of the correct option.`,
-//     });
-//     console.log(response.text);
-//     return Response.json({ result: response.text });
-//   } catch (err) {
-//     return Response.json(
-//       { error: "Server aldaa garlaa", details: String(err) },
-//       { status: 500 }
-//     );
-//   }
-// }
+    console.log("articleId:", articleId);
+    console.log("Received quizzes:", quizzes);
+
+    await prisma.quiz.createMany({
+      data: quizzes.map((quiz: QuizQuestion) => ({
+        question: quiz.question,
+        options: quiz.options,
+        answer: quiz.answer,
+        articleId: articleId,
+      })),
+    });
+    return NextResponse.json({ quizzes, articleId }, { status: 200 });
+  } catch (err) {
+    console.error("Quiz post error:", err);
+    return NextResponse.json(
+      { success: false, error: "failed to post quizzes" },
+      { status: 500 }
+    );
+  }
+}

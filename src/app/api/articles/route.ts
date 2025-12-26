@@ -41,7 +41,7 @@ export async function POST(req: NextRequest) {
     });
     console.log("article created", article);
     return NextResponse.json(
-      { success: true, message: "Article created" },
+      { success: true, message: "Article created", article },
       { status: 201 }
     );
   } catch (err) {

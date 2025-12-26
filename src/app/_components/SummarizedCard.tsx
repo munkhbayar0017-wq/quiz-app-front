@@ -29,6 +29,13 @@ type SummarizedCardProps = {
   title: string;
   content: string;
   setStep: React.Dispatch<React.SetStateAction<number>>;
+  articleId: string;
+};
+
+type QuizQuestion = {
+  question: string;
+  options: string[];
+  correctAnswer?: string;
 };
 
 export default function SummarizedCard({
@@ -39,6 +46,7 @@ export default function SummarizedCard({
   title,
   content,
   setStep,
+  articleId,
 }: SummarizedCardProps) {
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -51,16 +59,17 @@ export default function SummarizedCard({
         content,
       });
       setQuiz(response.data.result);
+      const parsedQuiz: QuizQuestion[] = JSON.parse(
+        response.data.result as unknown as string
+      );
       setStep(3);
+      console.log("ressososososo", parsedQuiz);
+      console.log("articleId", articleId);
+      const quizRes = await axios.post(`/api/article/${articleId}/quizzes`, {
+        quizzes: parsedQuiz,
+      });
 
-      //       const quizRes = await axios.post(`/api/article/${articleId}/quizzes`, {
-      // question
-      //   options
-      //   answer
-      //   articleId
-      //       });
-
-      //       console.log("article saved", quizRes);
+      console.log("article saved", quizRes);
     } catch (err) {
       console.error(err);
     } finally {

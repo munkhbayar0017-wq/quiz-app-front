@@ -24,6 +24,7 @@ type InputCardProps = {
   content: string;
   setContent: React.Dispatch<React.SetStateAction<string>>;
   setStep: React.Dispatch<React.SetStateAction<number>>;
+  setArticleId: React.Dispatch<React.SetStateAction<string>>;
 };
 
 export default function InputCard({
@@ -33,6 +34,7 @@ export default function InputCard({
   content,
   setContent,
   setStep,
+  setArticleId,
 }: InputCardProps) {
   const [loading, setLoading] = useState<boolean>(false);
   const handleGenerate = async () => {
@@ -55,7 +57,9 @@ export default function InputCard({
         summary: generatedSummary,
       });
 
+      setArticleId(articleRes.data.article.id);
       console.log("article saved", articleRes);
+      console.log("gkjhkhkjhkj", articleRes.data.article.id);
     } catch (err) {
       console.error(err);
     } finally {

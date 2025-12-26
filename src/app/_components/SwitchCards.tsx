@@ -13,20 +13,35 @@ export default function SwitchCards() {
   const [content, setContent] = useState<string>("");
   const [step, setStep] = useState<number>(1);
   const [quiz, setQuiz] = useState<[]>([]);
+  const [articleId, setArticleId] = useState<string>("");
 
   return (
-    <div className="max-w-214 w-full min-h-110.5 p-7 flex flex-col gap-5">
-      {step === 2 && (
-        <Button
-          onClick={() => {
-            setStep(1);
-          }}
-          variant="outline"
-          className="w-10 h-10 flex items-center justify-center border rounded-md cursor-pointer"
-        >
-          <ChevronLeft />
-        </Button>
-      )}
+    <div className="max-w-214 w-full min-h-110.5 p-7 flex flex-col items-center  gap-5">
+      <div className="w-full flex flex-col items-start gap-5">
+        {step === 2 && (
+          <Button
+            onClick={() => {
+              setStep(1);
+            }}
+            variant="outline"
+            className="w-10 h-10 flex items-center justify-center border rounded-md cursor-pointer"
+          >
+            <ChevronLeft />
+          </Button>
+        )}
+        {step === 2 && (
+          <SummarizedCard
+            quiz={quiz}
+            setQuiz={setQuiz}
+            summary={summary}
+            setSummary={setSummary}
+            title={title}
+            content={content}
+            setStep={setStep}
+            articleId={articleId}
+          />
+        )}
+      </div>
       {step === 1 && (
         <InputCard
           summary={summary}
@@ -36,19 +51,10 @@ export default function SwitchCards() {
           content={content}
           setContent={setContent}
           setStep={setStep}
+          setArticleId={setArticleId}
         />
       )}
-      {step === 2 && (
-        <SummarizedCard
-          quiz={quiz}
-          setQuiz={setQuiz}
-          summary={summary}
-          setSummary={setSummary}
-          title={title}
-          content={content}
-          setStep={setStep}
-        />
-      )}
+
       {step === 3 && <QuickTest setStep={setStep} quiz={quiz} />}
       {step === 4 && <QuizCompleted setStep={setStep} />}
     </div>

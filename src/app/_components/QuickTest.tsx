@@ -17,20 +17,51 @@ import { useState } from "react";
 type QuickTestProps = {
   quiz?: QuizQuestion[];
   setStep: React.Dispatch<React.SetStateAction<number>>;
+  setResult: React.Dispatch<
+    React.SetStateAction<
+      {
+        question: string;
+        selected: string;
+        correct: number;
+        isCorrect: boolean;
+      }[]
+    >
+  >;
+  setSelectedOptions: React.Dispatch<React.SetStateAction<number[]>>;
 };
 
 type QuizQuestion = {
   question: string;
   options: string[];
-  correctAnswer?: string;
+  answer?: string;
 };
 
-export default function QuickTest({ setStep, quiz }: QuickTestProps) {
+export default function QuickTest({
+  setStep,
+  quiz,
+  setSelectedOptions,
+  setResult,
+}: QuickTestProps) {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+
   const parsedQuiz: QuizQuestion[] = JSON.parse(quiz as unknown as string);
   const currentQuestion = parsedQuiz[currentQuestionIndex];
 
   const handleAnswerClick = (optionIndex: number) => {
+    const correctIndex = Number(currentQuestion.answer);
+    setSelectedOptions((prev) => [...prev, optionIndex]);
+    setResult((prev) => [
+      ...prev,
+      {
+        question: currentQuestion.question,
+        selected: currentQuestion.options[optionIndex],
+        correct: correctIndex,
+        isCorrect:
+          currentQuestion.options[optionIndex] ===
+          currentQuestion.options[correctIndex],
+      },
+    ]);
+
     if (currentQuestionIndex < parsedQuiz.length - 1) {
       setCurrentQuestionIndex(currentQuestionIndex + 1);
     } else {
@@ -87,7 +118,7 @@ export default function QuickTest({ setStep, quiz }: QuickTestProps) {
           </form>
         </Dialog>
       </div>
-      <div className="w-full min-h-50 h-fit bg-white border p-7 flex flex-col rounded-lg gap-5">
+      <div className="w-full h-fit bg-white border p-7 flex flex-col rounded-lg gap-5">
         <div className="flex justify-between gap-2 items-center">
           <div className="text-black font-inter text-[20px] font-medium leading-7 tracking-normal">
             {currentQuestion.question}
@@ -104,7 +135,7 @@ export default function QuickTest({ setStep, quiz }: QuickTestProps) {
             <Button
               key={optionIndex}
               variant="outline"
-              className="cursor-pointer text-left p-2 overflow-scroll"
+              className="cursor-pointer text-left p-2 overflow-scroll max-w-90 wrap-break-word whitespace-normal h-fit"
               onClick={() => handleAnswerClick(optionIndex)}
             >
               {optionIndex + 1}. {option}

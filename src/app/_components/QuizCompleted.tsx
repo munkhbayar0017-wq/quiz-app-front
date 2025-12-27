@@ -7,9 +7,18 @@ import BookMarkIcon from "../icons/BookMarkIcon";
 
 type QuickTestProps = {
   setStep: React.Dispatch<React.SetStateAction<number>>;
+  result: {
+    question: string;
+    selected: string;
+    correct: number;
+    isCorrect: boolean;
+  }[];
 };
 
-export default function QuizCompleted({ setStep }: QuickTestProps) {
+export default function QuizCompleted({ setStep, result }: QuickTestProps) {
+  const score = result.filter((r) => r.isCorrect).length;
+  const total = result.length;
+
   return (
     <div className="w-107 h-154 flex flex-col items-center justify-center gap-6">
       <div className="flex justify-between w-full">
@@ -31,55 +40,29 @@ export default function QuizCompleted({ setStep }: QuickTestProps) {
             Your score:
           </div>
           <div className="text-black font-inter text-[20px] font-medium leading-7 tracking-normal">
-            2/
+            {score}/
             <span className="text-gray-500 font-inter text-[16px] font-medium leading-6 tracking-normal">
-              5
+              {total}
             </span>
           </div>
         </div>
         <div className="flex flex-col gap-5">
-          <div className="flex gap-3">
-            <WrongIcon />
-            <div className="flex flex-col gap-1">
-              <div className="text-gray-500 font-inter text-[12px] font-medium leading-4 tracking-normal">
-                1. What was Genghis Khan’s birth name?
-              </div>
-              <div className="text-neutral-900 font-inter text-[12px] font-medium leading-4 tracking-normal">
-                Your answer: Toghrul
-              </div>
-              <div className="text-green-500 font-inter text-[12px] font-medium leading-4 tracking-normal">
-                Correct: Temüjin
-              </div>
-            </div>
-          </div>
-          <div className="flex gap-3">
-            <CorrectIcon />
-            <div className="flex flex-col gap-1">
-              <div className="text-gray-500 font-inter text-[12px] font-medium leading-4 tracking-normal">
-                1. What was Genghis Khan’s birth name?
-              </div>
-              <div className="text-neutral-900 font-inter text-[12px] font-medium leading-4 tracking-normal">
-                Your answer: Toghrul
-              </div>
-              <div className="text-green-500 font-inter text-[12px] font-medium leading-4 tracking-normal">
-                Correct: Temüjin
+          {result.map((r, index) => (
+            <div key={index} className="flex gap-3">
+              {r.isCorrect ? <CorrectIcon /> : <WrongIcon />}
+              <div className="flex flex-col gap-1 max-w-80">
+                <div className="text-gray-500 font-inter text-[12px] font-medium leading-4 tracking-normal">
+                  {index + 1}. {r.question}
+                </div>
+                <div className="text-neutral-900 font-inter text-[12px] font-medium leading-4 tracking-normal">
+                  Your answer: {r.selected}
+                </div>
+                <div className="text-green-500 font-inter text-[12px] font-medium leading-4 tracking-normal">
+                  {!r.isCorrect ? `Correct:${r.correct}` : ""}
+                </div>
               </div>
             </div>
-          </div>
-          <div className="flex gap-3">
-            <WrongIcon />
-            <div className="flex flex-col gap-1">
-              <div className="text-gray-500 font-inter text-[12px] font-medium leading-4 tracking-normal">
-                1. What was Genghis Khan’s birth name?
-              </div>
-              <div className="text-neutral-900 font-inter text-[12px] font-medium leading-4 tracking-normal">
-                Your answer: Toghrul
-              </div>
-              <div className="text-green-500 font-inter text-[12px] font-medium leading-4 tracking-normal">
-                Correct: Temüjin
-              </div>
-            </div>
-          </div>
+          ))}
         </div>
         <div className="flex justify-between gap-5">
           <Button

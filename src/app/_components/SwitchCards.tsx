@@ -14,6 +14,15 @@ export default function SwitchCards() {
   const [step, setStep] = useState<number>(1);
   const [quiz, setQuiz] = useState<[]>([]);
   const [articleId, setArticleId] = useState<string>("");
+  const [selectedOptions, setSelectedOptions] = useState<number[]>([]);
+  const [result, setResult] = useState<
+    {
+      question: string;
+      selected: string;
+      correct: number;
+      isCorrect: boolean;
+    }[]
+  >([]);
 
   return (
     <div className="max-w-214 w-full min-h-110.5 p-7 flex flex-col items-center  gap-5">
@@ -55,8 +64,15 @@ export default function SwitchCards() {
         />
       )}
 
-      {step === 3 && <QuickTest setStep={setStep} quiz={quiz} />}
-      {step === 4 && <QuizCompleted setStep={setStep} />}
+      {step === 3 && (
+        <QuickTest
+          setStep={setStep}
+          quiz={quiz}
+          setSelectedOptions={setSelectedOptions}
+          setResult={setResult}
+        />
+      )}
+      {step === 4 && <QuizCompleted setStep={setStep} result={result} />}
     </div>
   );
 }

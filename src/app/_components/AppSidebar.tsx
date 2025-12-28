@@ -11,13 +11,15 @@ import { useEffect, useState } from "react";
 
 type Article = {
   title: string;
+  id: string;
 };
 
 type AppSidebarProps = {
   setStep: React.Dispatch<React.SetStateAction<number>>;
+  setSelectedArticleId: React.Dispatch<React.SetStateAction<string>>;
 };
 
-export function AppSidebar({ setStep }: AppSidebarProps) {
+export function AppSidebar({ setStep, setSelectedArticleId }: AppSidebarProps) {
   const [articleData, setArticleData] = useState<Article[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const widths = ["w-50", "w-44", "w-48"];
@@ -28,6 +30,7 @@ export function AppSidebar({ setStep }: AppSidebarProps) {
       try {
         const responseArticle = await axios.get("/api/articles");
         setArticleData(responseArticle.data.articles);
+        setSelectedArticleId(responseArticle.data.articles[0]?.id || "");
         console.log("Articles fetched:", responseArticle.data);
       } catch (error) {
         console.error("Error articles fetch:", error);
@@ -36,6 +39,7 @@ export function AppSidebar({ setStep }: AppSidebarProps) {
       }
     };
     fetchArticles();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -58,7 +62,10 @@ export function AppSidebar({ setStep }: AppSidebarProps) {
         ) : (
           articleData.map((article, index) => (
             <Button
-              onClick={() => setStep(5)}
+              onClick={() => {
+                setSelectedArticleId(article.id);
+                setStep(5);
+              }}
               variant="outline"
               key={index}
               className="max-w-54 flex justify-start text-[#09090B] p-2 font-sans text-[16px] font-medium leading-6 tracking-0 border-none shadow-none cursor-pointer"

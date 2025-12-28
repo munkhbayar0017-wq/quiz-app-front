@@ -9,7 +9,7 @@ export async function GET(
 ) {
   try {
     const { articleId } = await params;
-    const article = await prisma.article.findUnique({
+    const article = await prisma.article.findMany({
       where: { id: articleId },
       include: { quizzes: true },
     });

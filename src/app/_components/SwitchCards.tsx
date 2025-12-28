@@ -7,17 +7,24 @@ import { useState } from "react";
 import QuickTest from "./QuickTest";
 import QuizCompleted from "./QuizCompleted";
 import ArticleHistory from "./ArticleHistory";
+import HistoryQuickTest from "./HistoryQuickTest";
 
 type SwitchCardsProps = {
   step: number;
   setStep: React.Dispatch<React.SetStateAction<number>>;
+  selectedArticleId: string;
 };
 
-export default function SwitchCards({ step, setStep }: SwitchCardsProps) {
+export default function SwitchCards({
+  step,
+  setStep,
+  selectedArticleId,
+}: SwitchCardsProps) {
   const [summary, setSummary] = useState<string>("");
   const [title, setTitle] = useState<string>("");
   const [content, setContent] = useState<string>("");
   const [quiz, setQuiz] = useState<[]>([]);
+  const [historyQuiz, setHistoryQuiz] = useState<[]>([]);
   const [articleId, setArticleId] = useState<string>("");
   const [selectedOptions, setSelectedOptions] = useState<number[]>([]);
   const [result, setResult] = useState<
@@ -28,7 +35,7 @@ export default function SwitchCards({ step, setStep }: SwitchCardsProps) {
       isCorrect: boolean;
     }[]
   >([]);
-
+  console.log("articleId in SwitchCards:", articleId);
   return (
     <div className="max-w-214 w-full min-h-110.5 p-7 flex flex-col items-center  gap-5">
       <div className="w-full flex flex-col items-start gap-5">
@@ -89,7 +96,21 @@ export default function SwitchCards({ step, setStep }: SwitchCardsProps) {
         />
       )}
       {step === 4 && <QuizCompleted setStep={setStep} result={result} />}
-      {step === 5 && <ArticleHistory articleId={articleId} />}
+      {step === 5 && (
+        <ArticleHistory
+          setStep={setStep}
+          selectedArticleId={selectedArticleId}
+          setHistoryQuiz={setHistoryQuiz}
+        />
+      )}
+      {step === 6 && (
+        <HistoryQuickTest
+          setStep={setStep}
+          historyQuiz={historyQuiz}
+          setSelectedOptions={setSelectedOptions}
+          setResult={setResult}
+        />
+      )}
     </div>
   );
 }

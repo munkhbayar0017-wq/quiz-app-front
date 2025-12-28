@@ -7,12 +7,16 @@ import { useState } from "react";
 
 export default function Home() {
   const [step, setStep] = useState<number>(1);
+  const [selectedArticleId, setSelectedArticleId] = useState<string>("");
   return (
     <div className="h-screen w-full flex flex-col bg-[#FAFAFA]">
       <Header />
 
       <div className="flex flex-1 overflow-hidden relative">
-        <AppSidebar setStep={setStep} />
+        <AppSidebar
+          setStep={setStep}
+          setSelectedArticleId={setSelectedArticleId}
+        />
         <div className="flex flex-col flex-1">
           <div className="flex flex-1 items-center justify-center">
             <div className="border-r flex pt-4 justify-center w-18 h-full bg-white">
@@ -20,7 +24,11 @@ export default function Home() {
             </div>
 
             <main className="flex pt-30 justify-center w-full h-full">
-              <SwitchCards step={step} setStep={setStep} />
+              <SwitchCards
+                step={step}
+                setStep={setStep}
+                selectedArticleId={selectedArticleId}
+              />
             </main>
           </div>
         </div>

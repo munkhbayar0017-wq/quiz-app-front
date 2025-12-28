@@ -6,12 +6,17 @@ import { ChevronLeft } from "lucide-react";
 import { useState } from "react";
 import QuickTest from "./QuickTest";
 import QuizCompleted from "./QuizCompleted";
+import ArticleHistory from "./ArticleHistory";
 
-export default function SwitchCards() {
+type SwitchCardsProps = {
+  step: number;
+  setStep: React.Dispatch<React.SetStateAction<number>>;
+};
+
+export default function SwitchCards({ step, setStep }: SwitchCardsProps) {
   const [summary, setSummary] = useState<string>("");
   const [title, setTitle] = useState<string>("");
   const [content, setContent] = useState<string>("");
-  const [step, setStep] = useState<number>(1);
   const [quiz, setQuiz] = useState<[]>([]);
   const [articleId, setArticleId] = useState<string>("");
   const [selectedOptions, setSelectedOptions] = useState<number[]>([]);
@@ -28,6 +33,17 @@ export default function SwitchCards() {
     <div className="max-w-214 w-full min-h-110.5 p-7 flex flex-col items-center  gap-5">
       <div className="w-full flex flex-col items-start gap-5">
         {step === 2 && (
+          <Button
+            onClick={() => {
+              setStep(1);
+            }}
+            variant="outline"
+            className="w-10 h-10 flex items-center justify-center border rounded-md cursor-pointer"
+          >
+            <ChevronLeft />
+          </Button>
+        )}
+        {step === 5 && (
           <Button
             onClick={() => {
               setStep(1);
@@ -73,6 +89,7 @@ export default function SwitchCards() {
         />
       )}
       {step === 4 && <QuizCompleted setStep={setStep} result={result} />}
+      {step === 5 && <ArticleHistory articleId={articleId} />}
     </div>
   );
 }

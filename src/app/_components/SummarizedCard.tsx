@@ -39,10 +39,8 @@ type QuizQuestion = {
 };
 
 export default function SummarizedCard({
-  quiz,
   setQuiz,
   summary,
-  setSummary,
   title,
   content,
   setStep,
@@ -52,6 +50,7 @@ export default function SummarizedCard({
 
   const handleTakeQuiz = async () => {
     if (!title || !content) return;
+    if (loading) return;
 
     setLoading(true);
     try {

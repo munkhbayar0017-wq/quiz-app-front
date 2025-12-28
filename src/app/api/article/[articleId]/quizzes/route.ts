@@ -1,3 +1,5 @@
+//api/article/[articleId]/quizzes/route.ts
+
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "../../../../../../lib/prisma";
 
@@ -32,6 +34,26 @@ export async function POST(
     console.error("Quiz post error:", err);
     return NextResponse.json(
       { success: false, error: "failed to post quizzes" },
+      { status: 500 }
+    );
+  }
+}
+export async function GET(
+  req: NextRequest,
+  { params }: { params: Promise<{ articleId: string }> }
+) {
+  try {
+    const { articleId } = await params;
+
+    const quizzes = await prisma.quiz.findMany({
+      where: { articleId: articleId },
+    });
+
+    return NextResponse.json({ quizzes }, { status: 200 });
+  } catch (err) {
+    console.error("Quiz get error:", err);
+    return NextResponse.json(
+      { success: false, error: "failed to get quizzes" },
       { status: 500 }
     );
   }

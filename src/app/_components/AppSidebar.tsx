@@ -1,0 +1,74 @@
+import { Button } from "@/components/ui/button";
+import {
+  Sidebar,
+  SidebarContent,
+  SidebarFooter,
+  SidebarHeader,
+} from "@/components/ui/sidebar";
+import { Skeleton } from "@/components/ui/skeleton";
+import axios from "axios";
+import { useEffect, useState } from "react";
+
+type Article = {
+  title: string;
+};
+
+type AppSidebarProps = {
+  setStep: React.Dispatch<React.SetStateAction<number>>;
+};
+
+export function AppSidebar({ setStep }: AppSidebarProps) {
+  const [articleData, setArticleData] = useState<Article[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
+  const widths = ["w-50", "w-44", "w-48"];
+
+  useEffect(() => {
+    const fetchArticles = async () => {
+      setLoading(true);
+      try {
+        const responseArticle = await axios.get("/api/articles");
+        setArticleData(responseArticle.data.articles);
+        console.log("Articles fetched:", responseArticle.data);
+      } catch (error) {
+        console.error("Error articles fetch:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchArticles();
+  }, []);
+
+  return (
+    <Sidebar className="border-none">
+      <SidebarHeader className="p-4 bg-white">
+        <h2 className="text-foreground text-lg font-semibold leading-7 tracking-tight">
+          History
+        </h2>
+      </SidebarHeader>
+      <SidebarContent className="bg-white p-4">
+        {loading ? (
+          <div className="flex flex-col gap-7 mt-1.5">
+            {Array.from({ length: 30 }).map((_, index) => (
+              <Skeleton
+                key={index}
+                className={`h-4 ${widths[index % widths.length]}`}
+              />
+            ))}
+          </div>
+        ) : (
+          articleData.map((article, index) => (
+            <Button
+              onClick={() => setStep(5)}
+              variant="outline"
+              key={index}
+              className="max-w-54 flex justify-start text-[#09090B] p-2 font-sans text-[16px] font-medium leading-6 tracking-0 border-none shadow-none cursor-pointer"
+            >
+              {article.title}
+            </Button>
+          ))
+        )}
+      </SidebarContent>
+      <SidebarFooter className=" p-4">Footer Content</SidebarFooter>
+    </Sidebar>
+  );
+}

@@ -4,6 +4,8 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { SidebarProvider } from "@/components/ui/sidebar";
 
+const clerkPubKey = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY;
+
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -24,9 +26,10 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  if (!clerkPubKey) throw new Error("Missing Clerk publishable key!");
   return (
     <html lang="en">
-      <ClerkProvider>
+      <ClerkProvider publishableKey={clerkPubKey}>
         <body
           className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         >

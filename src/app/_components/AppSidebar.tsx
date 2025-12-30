@@ -59,6 +59,15 @@ export function AppSidebar({ setStep, setSelectedArticleId }: AppSidebarProps) {
               />
             ))}
           </div>
+        ) : articleData.length === 0 ? (
+          <div className="flex flex-col items-center justify-center text-center gap-2 py-10">
+            <p className="text-sm font-medium text-muted-foreground">
+              No history yet
+            </p>
+            <p className="text-xs text-muted-foreground">
+              Your saved articles will appear here
+            </p>
+          </div>
         ) : (
           articleData.map((article, index) => (
             <Button

@@ -26,11 +26,11 @@ type QuickTestProps = {
   >;
 };
 
-export default function QuizCompleted({
+export default function HistoryQuizCompleted({
   setStep,
   result,
-  setSelectedOptions,
   setResult,
+  setSelectedOptions,
 }: QuickTestProps) {
   const score = result.filter((r) => r.isCorrect).length;
   const total = result.length;
@@ -38,10 +38,11 @@ export default function QuizCompleted({
   const handleSaveAndLeave = async () => {
     setStep(1);
   };
+
   const handleRestartQuiz = () => {
     setResult([]);
     setSelectedOptions([]);
-    setStep(3);
+    setStep(6);
   };
   return (
     <div className="w-107 min-h-154 flex flex-col items-center justify-center gap-6">

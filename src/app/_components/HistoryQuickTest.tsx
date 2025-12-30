@@ -67,7 +67,7 @@ export default function HistoryQuickTest({
     if (currentQuestionIndex < parsedQuiz.length - 1) {
       setCurrentQuestionIndex(currentQuestionIndex + 1);
     } else {
-      setStep(4);
+      setStep(7);
     }
   };
 

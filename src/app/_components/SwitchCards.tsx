@@ -8,6 +8,7 @@ import QuickTest from "./QuickTest";
 import QuizCompleted from "./QuizCompleted";
 import ArticleHistory from "./ArticleHistory";
 import HistoryQuickTest from "./HistoryQuickTest";
+import HistoryQuizCompleted from "./HistoryQuizCompleted";
 
 type SwitchCardsProps = {
   step: number;
@@ -95,7 +96,14 @@ export default function SwitchCards({
           setResult={setResult}
         />
       )}
-      {step === 4 && <QuizCompleted setStep={setStep} result={result} />}
+      {step === 4 && (
+        <QuizCompleted
+          setStep={setStep}
+          result={result}
+          setSelectedOptions={setSelectedOptions}
+          setResult={setResult}
+        />
+      )}
       {step === 5 && (
         <ArticleHistory
           setStep={setStep}
@@ -107,6 +115,14 @@ export default function SwitchCards({
         <HistoryQuickTest
           setStep={setStep}
           historyQuiz={historyQuiz}
+          setSelectedOptions={setSelectedOptions}
+          setResult={setResult}
+        />
+      )}
+      {step === 7 && (
+        <HistoryQuizCompleted
+          setStep={setStep}
+          result={result}
           setSelectedOptions={setSelectedOptions}
           setResult={setResult}
         />

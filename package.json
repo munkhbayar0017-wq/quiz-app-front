@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "prisma generate && next build",
+    "build": "next build",
     "start": "next start",
     "lint": "eslint"
   },
@@ -32,6 +32,7 @@
     "npx": "^10.2.2",
     "react": "19.2.3",
     "react-dom": "19.2.3",
+    "react-syntax-highlighter": "^16.1.0",
     "shadcn": "^3.6.2",
     "svix": "^1.82.0",
     "tailwind-merge": "^3.4.0"

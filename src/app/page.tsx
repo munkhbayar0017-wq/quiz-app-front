@@ -5,24 +5,18 @@ import { SidebarTrigger } from "@/components/ui/sidebar";
 import SwitchCards from "./_components/SwitchCards";
 import { useState } from "react";
 import { SignedIn, SignedOut } from "@clerk/nextjs";
-import { Button } from "@/components/ui/button";
 import {
   Card,
-  CardAction,
-  CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 
 export default function Home() {
   const [step, setStep] = useState<number>(1);
   const [selectedArticleId, setSelectedArticleId] = useState<string>("");
   return (
-    <div className="h-screen w-full flex flex-col  bg-[#FAFAFA]">
+    <div className="h-screen  w-full flex flex-col  bg-[#FAFAFA]">
       <Header />
       <SignedIn>
         <div className="flex flex-1 overflow-hidden relative">
@@ -36,7 +30,7 @@ export default function Home() {
                 <SidebarTrigger />
               </div>
 
-              <main className="flex pt-30 justify-center w-full h-full">
+              <main className="flex pt-6 justify-center w-full h-full">
                 <SwitchCards
                   step={step}
                   setStep={setStep}

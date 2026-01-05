@@ -103,7 +103,7 @@ export default function InputCard({
               <Textarea
                 required
                 placeholder="Paste your article content here..."
-                className="min-h-30"
+                className="min-h-30 max-h-60"
                 onChange={(e) => setContent(e.target.value)}
               />
             </div>
